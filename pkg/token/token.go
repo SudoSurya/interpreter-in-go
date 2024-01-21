@@ -30,6 +30,13 @@ const (
 	// Operators
 	ASSIGN = "="
 	PLUS   = "+"
+    MINUS  = "-"
+    BANG   = "!"
+    ASTRISK = "*"
+    SLASH   = "/"
+
+    LT = "<"
+    RT = ">"
 
 	// Delimiters
 	COMMA     = ","
