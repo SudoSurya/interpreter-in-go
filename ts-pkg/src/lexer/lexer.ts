@@ -8,7 +8,7 @@ type Lexer = {
     ch: string;
 }
 
-export class LexerClass {
+export class Tokenizer {
     public lexer: Lexer = {
         input: "",
         position: 0,
@@ -43,7 +43,14 @@ export class LexerClass {
 
         switch (this.lexer.ch) {
             case "=":
-                tok = this.newToken(Tokens.ASSIGN, this.lexer.ch);
+                if (this.peekChar() === "=") {
+                    let ch = this.lexer.ch;
+                    this.readChar();
+                    let literal = ch + this.lexer.ch;
+                    tok = { Type: Tokens.EQ, Literal: literal } as Token;
+                } else {
+                    tok = this.newToken(Tokens.ASSIGN, this.lexer.ch);
+                }
                 break;
             case ";":
                 tok = this.newToken(Tokens.SEMICOLON, this.lexer.ch);
@@ -59,6 +66,31 @@ export class LexerClass {
                 break;
             case "+":
                 tok = this.newToken(Tokens.PLUS, this.lexer.ch);
+                break;
+            case "-":
+                tok = this.newToken(Tokens.MINUS, this.lexer.ch);
+                break;
+            case "!":
+                if (this.peekChar() === "=") {
+                    let ch = this.lexer.ch;
+                    this.readChar();
+                    let literal = ch + this.lexer.ch;
+                    tok = { Type: Tokens.NOT_EQ, Literal: literal } as Token;
+                } else {
+                    tok = this.newToken(Tokens.ASSIGN, this.lexer.ch);
+                }
+                break;
+            case "/":
+                tok = this.newToken(Tokens.SLASH, this.lexer.ch);
+                break;
+            case "*":
+                tok = this.newToken(Tokens.ASTERISK, this.lexer.ch);
+                break;
+            case "<":
+                tok = this.newToken(Tokens.LT, this.lexer.ch);
+                break;
+            case ">":
+                tok = this.newToken(Tokens.GT, this.lexer.ch);
                 break;
             case "{":
                 tok = this.newToken(Tokens.LBRACE, this.lexer.ch);
@@ -118,5 +150,13 @@ export class LexerClass {
 
     private isDigit(ch: string): boolean {
         return "0" <= ch && ch <= "9";
+    }
+
+    private peekChar(): string {
+        if (this.lexer.readPosition >= this.lexer.input.length) {
+            return "";
+        } else {
+            return this.lexer.input[this.lexer.readPosition];
+        }
     }
 }

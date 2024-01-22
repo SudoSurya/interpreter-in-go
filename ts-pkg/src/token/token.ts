@@ -19,6 +19,16 @@ export enum Tokens {
     // Operators
     ASSIGN = '=',
     PLUS = '+',
+    MINUS = '-',
+    BANG = '!',
+    ASTERISK = '*',
+    SLASH = '/',
+
+    LT = '<',
+    GT = '>',
+
+    EQ = '==',
+    NOT_EQ = '!=',
 
     // Delimiters
     COMMA = ',',
@@ -32,11 +42,21 @@ export enum Tokens {
     // Keywords
     FUNCTION = 'FUNCTION',
     LET = 'LET',
+    TRUE = 'TRUE',
+    FALSE = 'FALSE',
+    IF = 'IF',
+    ELSE = 'ELSE',
+    RETURN = 'RETURN',
 }
 
 let keywords: { [key: string]: TokenType } = {
     'fn': Tokens.FUNCTION,
     'let': Tokens.LET,
+    'true': Tokens.TRUE,
+    'false': Tokens.FALSE,
+    'if': Tokens.IF,
+    'else': Tokens.ELSE,
+    'return': Tokens.RETURN,
 }
 
 export function LookupIdent(ident: string): TokenType {

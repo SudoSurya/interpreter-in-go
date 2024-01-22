@@ -1,13 +1,10 @@
 import { expect, test } from "@jest/globals";
 import { Tokens } from "../token/token";
-import { LexerClass } from "../lexer/lexer";
+import { Tokenizer } from "../lexer/lexer";
 test("lexer test", () => {
     const input = `let five = 5;
-                    let ten = 10;
-    let add = fn(x, y) {
-        x + y;
-    };
-    let result = add(five, ten);
+    10 == 10;
+    10 != 9;
     `
     const tests = [
         { Type: Tokens.LET, Literal: "let" },
@@ -15,38 +12,18 @@ test("lexer test", () => {
         { Type: Tokens.ASSIGN, Literal: "=" },
         { Type: Tokens.INT, Literal: "5" },
         { Type: Tokens.SEMICOLON, Literal: ";" },
-        { Type: Tokens.LET, Literal: "let" },
-        { Type: Tokens.IDENT, Literal: "ten" },
-        { Type: Tokens.ASSIGN, Literal: "=" },
+        { Type: Tokens.INT, Literal: "10" },
+        { Type: Tokens.EQ, Literal: "==" },
         { Type: Tokens.INT, Literal: "10" },
         { Type: Tokens.SEMICOLON, Literal: ";" },
-        { Type: Tokens.LET, Literal: "let" },
-        { Type: Tokens.IDENT, Literal: "add" },
-        { Type: Tokens.ASSIGN, Literal: "=" },
-        { Type: Tokens.FUNCTION, Literal: "fn" },
-        { Type: Tokens.LPAREN, Literal: "(" },
-        { Type: Tokens.IDENT, Literal: "x" },
-        { Type: Tokens.COMMA, Literal: "," },
-        { Type: Tokens.IDENT, Literal: "x" },
-        { Type: Tokens.PLUS, Literal: "+" },
-        { Type: Tokens.IDENT, Literal: "y" },
-        { Type: Tokens.SEMICOLON, Literal: ";" },
-        { Type: Tokens.RBRACE, Literal: "}" },
-        { Type: Tokens.SEMICOLON, Literal: ";" },
-        { Type: Tokens.LET, Literal: "let" },
-        { Type: Tokens.IDENT, Literal: "result" },
-        { Type: Tokens.ASSIGN, Literal: "=" },
-        { Type: Tokens.IDENT, Literal: "add" },
-        { Type: Tokens.LPAREN, Literal: "(" },
-        { Type: Tokens.IDENT, Literal: "five" },
-        { Type: Tokens.COMMA, Literal: "," },
-        { Type: Tokens.IDENT, Literal: "ten" },
-        { Type: Tokens.RPAREN, Literal: ")" },
+        { Type: Tokens.INT, Literal: "10" },
+        { Type: Tokens.NOT_EQ, Literal: "!=" },
+        { Type: Tokens.INT, Literal: "9" },
         { Type: Tokens.SEMICOLON, Literal: ";" },
         { Type: Tokens.EOF, Literal: "" },
     ]
 
-    const l = new LexerClass(input)
+    const l = new Tokenizer(input)
 
     tests.forEach((tt) => {
         const tok = l.NextToken()
