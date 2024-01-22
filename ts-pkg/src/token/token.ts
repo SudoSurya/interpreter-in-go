@@ -34,3 +34,14 @@ export enum Tokens {
     LET = 'LET',
 }
 
+let keywords: { [key: string]: TokenType } = {
+    'fn': Tokens.FUNCTION,
+    'let': Tokens.LET,
+}
+
+export function LookupIdent(ident: string): TokenType {
+    if (keywords[ident]) {
+        return keywords[ident];
+    }
+    return Tokens.IDENT;
+}

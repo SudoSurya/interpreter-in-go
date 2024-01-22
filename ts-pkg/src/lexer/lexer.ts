@@ -1,4 +1,4 @@
-import { Token, Tokens } from "../token/token";
+import { LookupIdent, Token, Tokens } from "../token/token";
 
 
 type Lexer = {
@@ -37,7 +37,10 @@ export class LexerClass {
     }
 
     public NextToken(): Token {
-        let tok: Token
+        let tok: Token = { Type: "", Literal: "" };
+
+        this.skipWhitespace();
+
         switch (this.lexer.ch) {
             case "=":
                 tok = this.newToken(Tokens.ASSIGN, this.lexer.ch);
@@ -67,7 +70,18 @@ export class LexerClass {
                 tok = this.newToken(Tokens.EOF, "");
                 break;
             default:
-                throw new Error(`Unknown token: ${this.lexer.ch}`);
+                if (this.isLetter(this.lexer.ch)) {
+                    tok.Literal = this.readIdentifier();
+                    tok.Type = LookupIdent(tok.Literal);
+                    return tok;
+                } else if (this.isDigit(this.lexer.ch)) {
+                    tok.Literal = this.readNumber();
+                    tok.Type = Tokens.INT;
+                    return tok;
+                }
+                else {
+                    tok = this.newToken(Tokens.ILLEGAL, this.lexer.ch);
+                }
         }
         this.readChar();
         return tok;
@@ -75,5 +89,34 @@ export class LexerClass {
 
     private newToken(tokenType: Tokens, ch: string): Token {
         return { Type: tokenType, Literal: ch };
+    }
+    private skipWhitespace(): void {
+        while (this.lexer.ch === " " || this.lexer.ch === "\t" || this.lexer.ch === "\n" || this.lexer.ch === "\r") {
+            this.readChar();
+        }
+    }
+
+    private readIdentifier(): string {
+        let pos = this.lexer.position
+        while (this.isLetter(this.lexer.ch)) {
+            this.readChar()
+        }
+        return this.lexer.input.slice(pos, this.lexer.position)
+    }
+
+    private readNumber(): string {
+        let pos = this.lexer.position
+        while (this.isDigit(this.lexer.ch)) {
+            this.readChar()
+        }
+        return this.lexer.input.slice(pos, this.lexer.position)
+    }
+
+    private isLetter(ch: string): boolean {
+        return "a" <= ch && ch <= "z" || "A" <= ch && ch <= "Z" || ch === "_";
+    }
+
+    private isDigit(ch: string): boolean {
+        return "0" <= ch && ch <= "9";
     }
 }
