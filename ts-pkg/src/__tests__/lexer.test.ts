@@ -27,7 +27,6 @@ test("lexer test", () => {
 
     tests.forEach((tt) => {
         const tok = l.NextToken()
-        console.log(tok)
         expect(tok.Type).toBe(tt.Type)
         expect(tok.Literal).toBe(tt.Literal)
     })

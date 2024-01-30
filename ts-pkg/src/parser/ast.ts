@@ -26,8 +26,8 @@ export class Program {
 
 export class LetStatement {
     public token: Token = {} as Token;
-    public name: Identifier = {} as Identifier;
-    public value: Expression = {} as Expression;
+    public name: Identifier = new Identifier()
+    public value: Expression = new Identifier()
 
     public statementNode(): void {
         throw new Error("unimplemented")

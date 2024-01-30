@@ -29,10 +29,10 @@ export class Parserizer {
     }
     public ParseProgram(): Program {
         let program = new Program()
-        program.Statements = [] as unknown as Statement[]
 
         while (this.parser.curToken.Type != Tokens.EOF) {
             let stmt = this.ParseStatement()
+            // console.log("statement",stmt)
             if (stmt != null) {
                 program.Statements.push(stmt)
             }
@@ -44,6 +44,7 @@ export class Parserizer {
     public ParseStatement(): Statement | null {
         switch (this.parser.curToken.Type) {
             case Tokens.LET:
+                // console.log("let statement parsed")
                 return this.ParseLetStatement()
             default:
                 return null
@@ -54,11 +55,9 @@ export class Parserizer {
         let stmt = new LetStatement()
         stmt.token = this.parser.curToken
 
-        if(this.expectPeek(Tokens.IDENT)){
+        if(!this.expectPeek(Tokens.IDENT)){
             return null
         }
-
-        stmt.name = new Identifier()
 
         stmt.name.token = this.parser.curToken
         stmt.name.value = this.parser.curToken.Literal
@@ -70,6 +69,8 @@ export class Parserizer {
         while(!this.curTokenIs(Tokens.SEMICOLON)){
             this.nextToken()
         }
+
+        console.log("let statement",stmt.name)
 
         return stmt
     }

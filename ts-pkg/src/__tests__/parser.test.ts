@@ -21,6 +21,7 @@ test("let parser ", () => {
         return
     }
 
+
     if (program.Statements.length != 3) {
         console.error("program.Statements does not contain 3 statements. got=%d", program.Statements.length)
         return
@@ -52,7 +53,7 @@ function testLetStatement(s: Statement, name: string): boolean {
         return false
     }
 
-    if (letStmt.TokenLiteral() != name) {
+    if (letStmt.name.TokenLiteral() != name) {
         console.error("s.Name not '%s'. got=%s", name, letStmt.name)
         return false
     }
