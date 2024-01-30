@@ -1,7 +1,7 @@
 import { LookupIdent, Token, Tokens } from "../token/token";
 
 
-type Lexer = {
+export type Lexer = {
     input: string;
     position: number;
     readPosition: number;
